@@ -10,6 +10,8 @@ def makelower(input): #turn a string into lowercase
     for chr in input:
         if chr.isalpha() or chr == ' ':
             loweredinput += chr.lower()
+        else:
+            loweredinput += chr
     return loweredinput
 
 def isquestion(input):
@@ -62,7 +64,7 @@ def keywordtracing(input):
                 foundlines[x] = 1
         foundlines = dict(sorted(foundlines.items(), key=lambda item: item[1], reverse=True))
     print(foundlines)
-    return foundlines
+    return foundlines #returns entire dictionary
 
 
 teststring = """In the heart of the dense, emerald jungle, a magnificent tiger named Rajah prowled with silent grace.
