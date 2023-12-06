@@ -10,8 +10,6 @@ def makelower(input): #turn a string into lowercase
     for chr in input:
         if chr.isalnum() or chr == ' ':
             loweredinput += chr.lower()
-        else:
-            loweredinput += chr
     return loweredinput
 
 def isquestion(input):
