@@ -140,3 +140,7 @@ else:
     #Do keyword calculation and append information to file
     #We can also check if we have counteractive or similar information already in file
     pass
+
+#Work on document in the sentece format
+#Incorporate the tdf in how we pick statements in questions
+#use this to work on ai requirement
