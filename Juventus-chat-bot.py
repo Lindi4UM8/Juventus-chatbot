@@ -50,8 +50,8 @@ def keywordtracing(input):
     keywordlist = inputcleanup(input)
     foundlines = dict()
     for word in keywordlist:
-        regexstring = f'.*{word}.*'
-        
+        #regexstring = f'.*{word}.*'
+        regexstring = r'(?:[^.!?]*\b' + re.escape(word) + r'\b[^.!?]*[.!?])'
         lineswithword = re.findall(regexstring,teststring)
         
         #add all to dictionary after checking all hits with all keywords
@@ -72,10 +72,11 @@ His fur, adorned with striking stripes, concealed the power that lay within his 
 Rajah was not just a jungle resident; he was the undisputed king, commanding respect from every creature in his realm.
 One day, a sudden drought struck, and the once lush vegetation withered under the unforgiving sun.
 Rajah, with keen instincts, led his fellow animals on a journey to find a hidden oasis.
-Along the way, he encountered challenges, but his regal demeanor and unwavering determination inspired the diverse group of animals.
+Along the way, he encountered challenges, but his regal demeanor and unwavering determination inspired the diverse group of animals
+and other creatures.
 As Rajah led them through the harsh terrain, his strength became a symbol of hope.
 Eventually, the oasis revealed itself, a shimmering haven amidst the parched land.
-Rajah, with a triumphant roar, watched as the jungle flourished once more.
+Rajah, with 2 triumphant roars, watched as the jungle flourished once more.
 The grateful animals, from the smallest birds to the mightiest elephants, acknowledged Rajah's leadership, and harmony was restored in the kingdom.
 From that day forward, Rajah's legend echoed through the jungle—a tale of resilience, unity, and the enduring spirit of their majestic tiger king."""
 
