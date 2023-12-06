@@ -3,7 +3,7 @@ from list_of_files import *
 import string
 import math
 
-file_path = 'juventus.txt'
+file_path = 'soccer.txt'
 
 def makelower(input): #turn a string into lowercase
     loweredinput = ''
@@ -114,7 +114,7 @@ def keywordtracing(input):
     for word in keywordlist:
         #regexstring = f'.*{word}.*'
         regexstring = r'(?:[^.!?]*\b' + re.escape(word) + r'\b[^.!?]*[.!?])'
-        lineswithword = re.findall(regexstring,teststring)
+        lineswithword = re.findall(regexstring,teststring) #FIXME USE THE DOCUMENT
         
         #add all to dictionary after checking all hits with all keywords
         #then use this to find most likely sentence to match question
@@ -129,25 +129,8 @@ def keywordtracing(input):
     return foundlines #returns entire dictionary
 
 
-teststring = """In the heart of the dense, emerald jungle, a magnificent tiger named Rajah prowled with silent grace.
-His fur, adorned with striking stripes, concealed the power that lay within his sinewy frame. 
-Rajah was not just a jungle resident; he was the undisputed king, commanding respect from every creature in his realm.
-One day, a sudden drought struck, and the once lush vegetation withered under the unforgiving sun.
-Rajah, with keen instincts, led his fellow animals on a journey to find a hidden oasis.
-Along the way, he encountered challenges, but his regal demeanor and unwavering determination inspired the diverse group of animals
-and other creatures.
-As Rajah led them through the harsh terrain, his strength became a symbol of hope.
-Eventually, the oasis revealed itself, a shimmering haven amidst the parched land.
-Rajah, with 2 triumphant roars, watched as the jungle flourished once more.
-The grateful animals, from the smallest birds to the mightiest elephants, acknowledged Rajah's leadership, and harmony was restored in the kingdom.
-From that day forward, Rajah's legend echoed through the jungle—a tale of resilience, unity, and the enduring spirit of their majestic tiger king."""
-
-
 #####   MAIN   #####
 humaninput = input()
-
-k = tf_idf(humaninput)
-print(k) #these are testing
 
 isQ = isquestion(humaninput) #used to for if else of how to treat input
 
