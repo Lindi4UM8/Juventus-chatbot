@@ -1,7 +1,9 @@
 import re
-from collections import defaultdict
 from list_of_files import *
+import string
+import math
 
+file_path = 'juventus.txt'
 
 def makelower(input): #turn a string into lowercase
     loweredinput = ''
@@ -79,11 +81,12 @@ def word_appearances_input(humaninput, word):
 
 # caluclates the tf-idf for each word and puts it and its score in a dictionary
 def tf_idf(input):
+    input = inputcleanup(input)
     tf_idf_dict = {}
     for item in input:
         total_lines = doc_count(file_path)
         word_total = total_words(humaninput)
-        word_input_appearances = word_appearances_input(bare_sentence, item)
+        word_input_appearances = word_appearances_input(makelower(humaninput), item)
         word_file_occurrences = occurrences_text(file_path, item)
         tf = word_input_appearances/word_total
         tf_idf = 0
@@ -139,8 +142,12 @@ Rajah, with 2 triumphant roars, watched as the jungle flourished once more.
 The grateful animals, from the smallest birds to the mightiest elephants, acknowledged Rajah's leadership, and harmony was restored in the kingdom.
 From that day forward, Rajah's legend echoed through the jungle—a tale of resilience, unity, and the enduring spirit of their majestic tiger king."""
 
+
 #####   MAIN   #####
 humaninput = input()
+
+k = tf_idf(humaninput)
+print(k) #these are testing
 
 isQ = isquestion(humaninput) #used to for if else of how to treat input
 
@@ -150,4 +157,3 @@ else:
     #Do keyword calculation and append information to file
     #We can also check if we have counteractive or similar information already in file
     pass
-
