@@ -8,7 +8,7 @@ questionwordlist = ["who", "what", "when", "where", "why", "which", "whose", "wh
 def makelower(input): #turn a string into lowercase
     loweredinput = ''
     for chr in input:
-        if chr.isalpha() or chr == ' ':
+        if chr.isalnum() or chr == ' ':
             loweredinput += chr.lower()
         else:
             loweredinput += chr
