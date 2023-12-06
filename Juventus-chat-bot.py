@@ -21,6 +21,15 @@ def isquestion(input):
 
     return False
 
+# removes question mark, period, or exclamation point from sentence
+def remove_punctuation(input):
+    punctuation_chars = string.punctuation
+    # Create a translation table to remove punctuation
+    translation_table = str.maketrans("", "", punctuation_chars)
+    # Use translate to remove punctuation from the sentence
+    cleaned_sentence = input.translate(translation_table)
+    return cleaned_sentence
+
 def inputcleanup(input):
     #Taken from laplace soothing project
     #There are many question words in stopwordslist use isquestion to identify if question
@@ -41,6 +50,60 @@ def inputcleanup(input):
     for y in deletinglist:
         cleaninput.remove(y)
     return cleaninput
+
+# finds the number of times the target word appears in the file 
+def occurrences_text(file_path, target_word):
+    with open(file_path, 'r') as file:
+        #line_count = sum(1 for line in file)
+        content = file.read()
+        # Using regex to find the number of times the target word appears
+        occurrences = len(re.findall(r'\b' + re.escape(target_word) + r'\b', content, re.IGNORECASE))
+        return occurrences
+
+# finds the number of lines the document has 
+def doc_count(file_path):
+    with open(file_path, 'r') as file:
+        line_count = sum(1 for line in file)
+        return line_count
+
+#finds the number of words in the humaninput
+def total_words(humaninput):
+    words = humaninput.split()
+    total_word_count = len(words)
+    return total_word_count
+
+#finds the number of times the target word appears in the humaninput
+def word_appearances_input(humaninput, word):
+    appearances = humaninput.lower().split().count(word.lower())
+    return appearances
+
+# caluclates the tf-idf for each word and puts it and its score in a dictionary
+def tf_idf(input):
+    tf_idf_dict = {}
+    for item in input:
+        total_lines = doc_count(file_path)
+        word_total = total_words(humaninput)
+        word_input_appearances = word_appearances_input(bare_sentence, item)
+        word_file_occurrences = occurrences_text(file_path, item)
+        tf = word_input_appearances/word_total
+        tf_idf = 0
+        if word_file_occurrences > 0:
+            idf = math.log10(total_lines/word_file_occurrences)
+            tf_idf = tf*idf
+        tf_idf_dict[item] = tf_idf
+    return tf_idf_dict
+
+# sorts the dictionary, removes the keys with values of 0, then appends each remaining key to the keyword list
+def get_keyword(tf_idf_dict):
+    keywords = []
+    sorted_keys = sorted(tf_idf_dict, key=lambda x: tf_idf_dict[x], reverse=True)
+    for key, value in tf_idf_dict.items():
+        if value > 0:
+            keywords.append(key)
+    return keywords
+    
+
+
 
 def keywordtracing(input):
     keywordlist = inputcleanup(input)
