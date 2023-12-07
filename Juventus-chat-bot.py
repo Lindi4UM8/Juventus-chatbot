@@ -108,13 +108,13 @@ def get_keyword(tf_idf_dict):
 
 
 
-def keywordtracing(input):
-    keywordlist = inputcleanup(input)
+def keywordtracing(keywordlist):
     foundlines = dict()
     for word in keywordlist:
-        #regexstring = f'.*{word}.*'
-        regexstring = r'(?:[^.!?]*\b' + re.escape(word) + r'\b[^.!?]*[.!?])'
-        lineswithword = re.findall(regexstring,teststring) #FIXME USE THE DOCUMENT
+        with open(file_path, 'r') as file:
+            content = file.read()
+            regexstring = r'(?:[^.!?]*\b' + re.escape(word) + r'\b[^.!?]*[.!?])'
+            lineswithword = re.findall(regexstring, content, re.IGNORECASE ) #FIXME USE THE DOCUMENT
         
         #add all to dictionary after checking all hits with all keywords
         #then use this to find most likely sentence to match question
@@ -125,8 +125,10 @@ def keywordtracing(input):
             else:
                 foundlines[x] = 1
         foundlines = dict(sorted(foundlines.items(), key=lambda item: item[1], reverse=True))
-    print(foundlines)
+    answer = list(foundlines.keys())[0]
+    print(answer)
     return foundlines #returns entire dictionary
+
 
 
 #####   MAIN   #####
@@ -135,12 +137,10 @@ humaninput = input()
 isQ = isquestion(humaninput) #used to for if else of how to treat input
 
 if isQ == True:
-    keywordtracing(humaninput)
+    tf_idf_dict = tf_idf(humaninput)
+    keywordlist = get_keyword(tf_idf_dict)
+    keywordtracing(keywordlist)
 else:
     #Do keyword calculation and append information to file
     #We can also check if we have counteractive or similar information already in file
     pass
-
-#Work on document in the sentece format
-#Incorporate the tdf in how we pick statements in questions
-#use this to work on ai requirement
