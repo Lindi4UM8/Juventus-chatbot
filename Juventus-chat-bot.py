@@ -2,6 +2,8 @@ import re
 from list_of_files import *
 import string
 import math
+from nltk.corpus import wordnet
+
 
 file_path = 'soccer.txt'
 
@@ -106,9 +108,9 @@ def get_keyword(tf_idf_dict):
     return keywords
     
 
-
-
-def keywordtracing(keywordlist):
+def keywordtracing(input):
+    tf_idf_dict = tf_idf(input)
+    keywordlist = get_keyword(tf_idf_dict)
     foundlines = dict()
     for word in keywordlist:
         with open(file_path, 'r') as file:
@@ -129,6 +131,16 @@ def keywordtracing(keywordlist):
     print(answer)
     return foundlines #returns entire dictionary
 
+def synonyms(input):
+    synonyms = []
+
+    for syn in wordnet.synsets(input):
+        for lm in syn.lemmas():
+                synonyms.append(lm.name())
+
+    if len(synonyms) == 0: #if no synonyms returns word as it is
+        return input
+    return (set(synonyms)) #returns a set of synonym for the word
 
 
 #####   MAIN   #####
@@ -137,10 +149,10 @@ humaninput = input()
 isQ = isquestion(humaninput) #used to for if else of how to treat input
 
 if isQ == True:
-    tf_idf_dict = tf_idf(humaninput)
-    keywordlist = get_keyword(tf_idf_dict)
-    keywordtracing(keywordlist)
+    keywordtracing(humaninput)
 else:
     #Do keyword calculation and append information to file
     #We can also check if we have counteractive or similar information already in file
     pass
+
+
