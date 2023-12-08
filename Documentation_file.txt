@@ -1,0 +1,14 @@
+Documentation file
+
+To get synonoms function to work
+Go to finder find the python install > double click Install Certifications.command
+
+in terminal
+python3 -m pip install --upgrade pip
+pip install nltk
+sudo python3
+>> import ntlk
+>> nltk.download()
+
+change the download directory to /usr/local/share/nltk_data
+in the popup window find wordnet library on the corpus tag and download it
