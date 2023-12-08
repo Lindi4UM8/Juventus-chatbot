@@ -2,7 +2,7 @@ import re
 from list_of_files import *
 import string
 import math
-from nltk.corpus import wordnet
+# from nltk.corpus import wordnet   #for synonym function
 
 
 file_path = 'soccer.txt'
@@ -127,32 +127,37 @@ def keywordtracing(input):
             else:
                 foundlines[x] = 1
         foundlines = dict(sorted(foundlines.items(), key=lambda item: item[1], reverse=True))
-    answer = list(foundlines.keys())[0]
-    print(answer)
-    return foundlines #returns entire dictionary
+    if len(foundlines) != 0:
+        answer = list(foundlines.keys())[0]
+        print(answer)
+        return foundlines #returns entire dictionary
+    return #In the case where there are no keywords it returns nothing, we can change it to be a message of output like: Can you rephrase the question
 
-def synonyms(input):
-    synonyms = []
+# def synonyms(input): #probably not useful, but keeping function in case, REMEMBER to uncomment import if using
+#     synonyms = []
 
-    for syn in wordnet.synsets(input):
-        for lm in syn.lemmas():
-                synonyms.append(lm.name())
+#     for syn in wordnet.synsets(input):
+#         for lm in syn.lemmas():
+#                 synonyms.append(lm.name())
 
-    if len(synonyms) == 0: #if no synonyms returns word as it is
-        return input
-    return (set(synonyms)) #returns a set of synonym for the word
+#     synonyms.append(input)
+#     return (set(synonyms)) #returns a set of synonym for the word
+
+def addToDocument(input):
+    with open(file_path, 'a') as file:
+        file.write(f"{input}. ")
+        return
 
 
 #####   MAIN   #####
-humaninput = input()
+humaninput = ''
+while(humaninput != 'q'):
+    humaninput = input('Enter q to quit: \n')
+    isQ = isquestion(humaninput) #used to for if else of how to treat input
 
-isQ = isquestion(humaninput) #used to for if else of how to treat input
-
-if isQ == True:
-    keywordtracing(humaninput)
-else:
-    #Do keyword calculation and append information to file
-    #We can also check if we have counteractive or similar information already in file
-    pass
-
-
+    if isQ == True:
+        keywordtracing(humaninput)
+    else:
+        addToDocument(humaninput)
+    
+    
