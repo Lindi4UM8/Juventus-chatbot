@@ -1,0 +1,43 @@
+//part of speech function idea
+
+import nltk
+from nltk import pos_tag
+from nltk.tokenize import word_tokenize
+
+nltk.data.path.append("/usr/local/share/nltk_data")
+
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+
+
+
+def split_sentence(sentence):
+    # Tokenize the sentence
+    words = word_tokenize(sentence)
+
+    # Perform part-of-speech tagging
+    pos_tags = pos_tag(words)
+
+    question_word = None
+    main_verb = None
+    rest_of_string = None
+
+    for i in range(len(pos_tags)):
+        word, pos = pos_tags[i]
+        if pos.startswith('W'):  # Identifying question words
+            question_word = word.lower()
+        elif pos.startswith('V'):  # Identifying verbs
+            main_verb = word.lower()
+            rest_of_string = ' '.join(words[i+1:])
+            break
+
+    return question_word, main_verb, rest_of_string
+
+# Example usage
+user_input = "What is the weather like today?"
+question_word, main_verb, rest_of_string = split_sentence(user_input)
+
+print("Question Word:", question_word)
+print("Main Verb:", main_verb)
+print("Rest of String:", rest_of_string)
+
