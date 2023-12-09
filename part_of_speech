@@ -1,0 +1,28 @@
+//part of soeech tagger function idea
+
+import spacy
+
+# Load the English language model
+nlp = spacy.load("en_core_web_sm")
+
+def get_pos_tags(text):
+    # Process the text with spaCy
+    doc = nlp(text)
+
+    # Extract part-of-speech tags for each word
+    pos_tags = [(token.text, token.pos_) for token in doc]
+
+    return pos_tags
+
+# Example usage
+sentence = input()
+string = "Dybala was born in buenos aires, argentina."
+pos_tags = get_pos_tags(sentence)
+print(pos_tags)
+print()
+pos_tags = get_pos_tags(string)
+print(string)
+
+# Print the part-of-speech tags for each word
+for word, pos in pos_tags:
+    print(f"{word}: {pos}")
