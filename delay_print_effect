@@ -1,0 +1,19 @@
+import time
+import os
+import sys
+
+def loading(delay = .25):
+    text = "..."
+    for i in range(3):
+        for item in range(len(text)):
+            print(text[item], end=" ")
+            time.sleep(delay)
+        print('\r' + ' ' * 6, end = "\r")
+        time.sleep(delay)
+        
+
+
+def smooth_transition(text, delay=0.046):
+    for char in text:
+        print(char, end='', flush = True)
+        time.sleep(delay)
