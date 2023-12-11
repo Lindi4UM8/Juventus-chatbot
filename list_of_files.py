@@ -26,3 +26,11 @@ phrases_when_unsure = [
     "I'm sorry, the details on that are not available in my database.",
     "I appreciate your question, but I don't have the answer."
 ]
+
+repeatquestionlist = [
+    "I already answered that, but I'm happy to repeat it for you: ",
+    "Either I'm having déjà vu, or you really want to know! Here's the answer again: ",
+    "As I stated above: ",
+    "I noticed you're really curious about this! No worries it's still: ",
+    "Either my crystal ball is malfunctioning, or we're stuck in a time loop! No worries, though. Here's the answer again: "
+]
