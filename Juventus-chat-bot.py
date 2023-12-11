@@ -3,6 +3,7 @@ from list_of_files import *
 import string
 import math
 # from nltk.corpus import wordnet   #for synonym function
+import random
 
 
 file_path = 'soccer.txt'
@@ -116,7 +117,7 @@ def keywordtracing(input):
         with open(file_path, 'r') as file:
             content = file.read()
             regexstring = r'(?:[^.!?]*\b' + re.escape(word) + r'\b[^.!?]*[.!?])'
-            lineswithword = re.findall(regexstring, content, re.IGNORECASE ) #FIXME USE THE DOCUMENT
+            lineswithword = re.findall(regexstring, content, re.IGNORECASE )
         
         #add all to dictionary after checking all hits with all keywords
         #then use this to find most likely sentence to match question
@@ -129,8 +130,8 @@ def keywordtracing(input):
         foundlines = dict(sorted(foundlines.items(), key=lambda item: item[1], reverse=True))
     if len(foundlines) != 0:
         answer = list(foundlines.keys())[0]
-        print(answer)
-        return foundlines #returns entire dictionary
+        repeatQuestion(makelower(humaninput),answer)
+        return answer
     return #In the case where there are no keywords it returns nothing, we can change it to be a message of output like: Can you rephrase the question
 
 # def synonyms(input): #probably not useful, but keeping function in case, REMEMBER to uncomment import if using
@@ -148,16 +149,32 @@ def addToDocument(input):
         file.write(f"{input}. ")
         return
 
+questiondict = dict()
+def repeatQuestion(input,output):
+    
+    if input in questiondict.keys():
+        print(repeatquestionlist[random.randint(0,4)])
+        return questiondict.get(input)
+    else:
+        questiondict[input] = output
+    return
 
 #####   MAIN   #####
 humaninput = ''
 while(humaninput != 'q'):
     humaninput = input('Enter q to quit: \n')
     isQ = isquestion(humaninput) #used to for if else of how to treat input
+    if humaninput == 'q':
+        break # JUST HERE WHILE WE NEED IT FOR THE TESTING LOOP
 
     if isQ == True:
-        keywordtracing(humaninput)
+        message = keywordtracing(humaninput)
+        print(message)
     else:
         addToDocument(humaninput)
     
+
+
     
+
+
