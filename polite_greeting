@@ -1,0 +1,71 @@
+//this prints a greeting based on the time of day. Good morning for morning, good afternoon for afternoon etc.
+//then on the 2nd iteration, it uses a random polite word to precede its print statement
+// if user inputs "hard question" it picks a random phrase that says it does not know the answer in a smart way. 
+
+from datetime import datetime
+import random
+
+polite_words = ["Let's find that out", "Definitely", "Absolutely", "Sure", "Of course", "Certainly", "Of course sir", "Good question", "Absolutely", "Sure thing", "Hmmm let me think"]
+
+phrases_when_unsure = [
+    "I'm sorry, I don't have that information.",
+    "I'm afraid I don't know the answer to that.",
+    "Apologies, I don't have that data at the moment.",
+    "That's a bit beyond my knowledge base.",
+    "Unfortunately, I can't provide an answer to that question.",
+    "I don't have the specific details you're looking for.",
+    "Regrettably, I'm not equipped to answer that.",
+    "I'm sorry, the information you're seeking is not available to me.",
+    "I'm not sure about that. Is there anything else I can help you with?",
+    "I don't have the necessary details to answer your question accurately.",
+    "My capabilities are limited in that area, and I can't provide the information you need.",
+    "I'm sorry, that falls outside my scope of knowledge.",
+    "I wish I could assist, but I don't have the answer.",
+    "I don't have the specifics on that topic.",
+    "Unfortunately, I'm unable to help with that inquiry.",
+    "I'm sorry, but that's not within my expertise.",
+    "My apologies, but I can't provide the information you're looking for.",
+    "I'm not familiar with that particular detail.",
+    "I'm sorry, the details on that are not available in my database.",
+    "I appreciate your question, but I don't have the answer."
+]
+
+
+
+# Get the current date and time
+current_time = datetime.now()
+
+# Extract the current hour
+current_hour = current_time.hour
+
+# Define the time ranges for greetings
+morning_range = range(6, 12)
+afternoon_range = range(12, 18)
+evening_range = range(18, 24)
+night_range = range(0,6)
+
+# Determine the greeting based on the current hour
+if current_hour in morning_range:
+    greeting = "Good morning"
+elif current_hour in afternoon_range:
+    greeting = "Good afternoon"
+elif current_hour in evening_range:
+    greeting = "Good eveningsam"
+else:
+    greeting = "Hello there fellow night owl"
+
+first_iteration = True
+while True:
+    # Get user input
+    user_name = input("Enter your name: ")
+    
+    if first_iteration:
+        # Print the personalized greeting
+        print(f"{greeting}, {user_name}!")
+        first_iteration = False
+    elif user_name == "hard question":
+        unknown_comeback = random.choice(phrases_when_unsure)
+        print(unknown_comeback)
+    else:
+        random_polite_word = random.choice(polite_words)
+        print(f"{random_polite_word}, {user_name}!")
