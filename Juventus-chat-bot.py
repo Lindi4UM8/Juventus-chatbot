@@ -3,6 +3,8 @@ from list_of_files import *
 import string
 import math
 # from nltk.corpus import wordnet   #for synonym function
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import sent_tokenize, word_tokenize
 import random
 
 
@@ -110,12 +112,14 @@ def get_keyword(tf_idf_dict):
     
 
 def keywordtracing(input):
+    input = lemmanizedstring(input)
     tf_idf_dict = tf_idf(input)
     keywordlist = get_keyword(tf_idf_dict)
     foundlines = dict()
     for word in keywordlist:
         with open(file_path, 'r') as file:
             content = file.read()
+            content = lemmanizedstring(content)
             regexstring = r'(?:[^.!?]*\b' + re.escape(word) + r'\b[^.!?]*[.!?])'
             lineswithword = re.findall(regexstring, content, re.IGNORECASE )
         
@@ -130,6 +134,8 @@ def keywordtracing(input):
         foundlines = dict(sorted(foundlines.items(), key=lambda item: item[1], reverse=True))
     if len(foundlines) != 0:
         answer = list(foundlines.keys())[0]
+        periodCount = findperiodCount(answer,content)
+        answer = findOrigionalText(periodCount)
         repeatQuestion(makelower(humaninput),answer)
         return answer
     return #In the case where there are no keywords it returns nothing, we can change it to be a message of output like: Can you rephrase the question
@@ -159,6 +165,36 @@ def repeatQuestion(input,output):
         questiondict[input] = output
     return
 
+def lemmanizedstring(input):
+    lemmatizer = WordNetLemmatizer()
+    content = word_tokenize(input)
+    newcontent = ''
+    for word in content:
+        word = lemmatizer.lemmatize(word)
+        newcontent += f'{word} '
+    return newcontent #returns completely lemmanized string
+
+def findperiodCount(input,content):
+    periodCount = 0
+    content = content.split('.')
+    for period in content:
+        period += '.'
+        periodCount += 1
+        if period == input:
+            break
+    return periodCount
+
+def findOrigionalText(input):
+    with open(file_path, 'r') as file:
+        content = file.read()
+        content = content.split('.')
+        count = 0
+        for sentence in content:
+            count += 1
+            if count == input:
+                answer = sentence
+    return answer
+
 #####   MAIN   #####
 humaninput = ''
 while(humaninput != 'q'):
@@ -172,9 +208,3 @@ while(humaninput != 'q'):
         print(message)
     else:
         addToDocument(humaninput)
-    
-
-
-    
-
-
