@@ -25,7 +25,9 @@ def isquestion(input):
     inputwordlist = changedinput.split(" ")
     if inputwordlist[0] in questionwordlist:
         return True
-
+    changedword = typocheck(inputwordlist[0])
+    if changedword in questionwordlist:
+        return True
     return False
 
 # removes question mark, period, or exclamation point from sentence
@@ -98,6 +100,19 @@ def tf_idf(input):
         if word_file_occurrences > 0:
             idf = math.log10(total_lines/word_file_occurrences)
             tf_idf = tf*idf
+        else:
+            changeditem = typocheck(item)
+            if changeditem != None:
+                changeditem = inputcleanup(changeditem)
+                if changeditem == []:
+                    continue #potential to be added into the td idf dict with a value of zero
+                changeditem = str(changeditem[0])
+                word_file_occurrences = occurrences_text(file_path, changeditem)
+                if word_file_occurrences > 0:
+                    idf = math.log10(total_lines/word_file_occurrences)
+                    tf_idf = tf*idf
+                tf_idf_dict[changeditem] = tf_idf
+                continue
         tf_idf_dict[item] = tf_idf
     return tf_idf_dict
 
@@ -195,6 +210,13 @@ def findOrigionalText(input):
                 answer = sentence
     return answer
 
+def typocheck(input):
+    for lists in typodictionary.values():
+        for word in lists:
+            if word == input:
+                return list(typodictionary.keys())[list(typodictionary.values()).index(lists)]
+    return None
+
 #####   MAIN   #####
 humaninput = ''
 while(humaninput != 'q'):
@@ -208,3 +230,5 @@ while(humaninput != 'q'):
         print(message)
     else:
         addToDocument(humaninput)
+
+##add typo check, check words that are classified as key, with tdf value of zero
