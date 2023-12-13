@@ -164,8 +164,10 @@ def keywordtracing(input):
         answer = list(foundlines.keys())[0]
         periodCount = findperiodCount(answer,content)
         answer = findOrigionalText(periodCount)
-        repeatQuestion(makelower(humaninput),answer)
-        return answer
+        answerchanged = ''
+        answerchanged += repeatQuestion(makelower(humaninput),answer)
+        answerchanged += answer
+        return answerchanged
     return #In the case where there are no keywords it returns nothing, we can change it to be a message of output like: Can you rephrase the question
 
 # def synonyms(input): #probably not useful, but keeping function in case, REMEMBER to uncomment import if using
@@ -187,11 +189,11 @@ questiondict = dict()
 def repeatQuestion(input,output):
     
     if input in questiondict.keys():
-        print(repeatquestionlist[random.randint(0,4)])
-        return questiondict.get(input)
+        return repeatquestionlist[random.randint(0,4)] + '\n'
+        
     else:
         questiondict[input] = output
-    return
+    return ''
 
 def lemmanizedstring(input):
     lemmatizer = WordNetLemmatizer()
@@ -259,15 +261,14 @@ def send_message(Event = None):
         chat_window.insert(tb.END, "You: " + humaninput + "\n")
         loading(chat_window)
         isQ = isquestion(humaninput)
-        print(isQ)
         if isQ == True:
             message = keywordtracing(humaninput)
-            print(message)
         else:
             addToDocument(humaninput)
+            message = "I will take that into account."
         GUIinput.set("")
         chat_window.insert(tb.END, "\n")
-        chat_window.insert(tb.END, smooth_transition_gui(chat_window, message), "\n")
+        smooth_transition_gui(chat_window,f'Agent:  {message}')
         chat_window.insert(tb.END, "\n")
 
 def bot_response(chat_window, response):
