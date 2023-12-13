@@ -6,6 +6,8 @@ import math
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import sent_tokenize, word_tokenize
 import random
+from datetime import datetime
+
 
 import tkinter as tk
 from tkinter import *
@@ -168,7 +170,7 @@ def keywordtracing(input):
         answerchanged += repeatQuestion(makelower(humaninput),answer)
         answerchanged += answer
         return answerchanged
-    return phrases_when_unsure[random.randint(0,19)]
+    return #In the case where there are no keywords it returns nothing, we can change it to be a message of output like: Can you rephrase the question
 
 # def synonyms(input): #probably not useful, but keeping function in case, REMEMBER to uncomment import if using
 #     synonyms = []
@@ -190,6 +192,7 @@ def repeatQuestion(input,output):
     
     if input in questiondict.keys():
         return repeatquestionlist[random.randint(0,4)] + '\n'
+        
     else:
         questiondict[input] = output
     return ''
@@ -251,6 +254,14 @@ def smooth_transition_gui(chat_window, text, delay=0.046):
         time.sleep(delay)   
     return " "
 
+def polite_check(polite_phrases):
+    politeness = False
+    for item in polite_phrases:
+        if item in humaninput:
+            politeness = True
+    return politeness
+
+
 def send_message(Event = None):
     global humaninput
     humaninput = GUIinput.get()
@@ -260,18 +271,46 @@ def send_message(Event = None):
         chat_window.insert(tb.END, "You: " + humaninput + "\n")
         loading(chat_window)
         isQ = isquestion(humaninput)
+        manners = ""
         if isQ == True:
             message = keywordtracing(humaninput)
+            politeness = polite_check(polite_phrases)
+            if politeness:
+                manners = random.choice(polite_words)
         else:
             addToDocument(humaninput)
-            message = "I am learning..."
+            message = random.choice(learning_responses)
         GUIinput.set("")
         chat_window.insert(tb.END, "\n")
-        smooth_transition_gui(chat_window,f'Agent:  {message}')
+        smooth_transition_gui(chat_window,f'Agent: {manners}{message}')
         chat_window.insert(tb.END, "\n")
 
+
+# Determine the greeting based on the current hour
+def time_greeting():    
+    # Get the current date and time
+    current_time = datetime.now()
+    # Extract the current hour
+    current_hour = current_time.hour
+    # Define the time ranges for greetings
+    morning_range = range(6, 12)
+    afternoon_range = range(12, 18)
+    evening_range = range(18, 24)
+    night_range = range(0,6)
+    if current_hour in morning_range:
+        greeting = "Good morning"
+    elif current_hour in afternoon_range:
+        greeting = "Good afternoon"
+    elif current_hour in evening_range:
+        greeting = "Good evening"
+    else:
+        greeting = "Hello there fellow night owl"
+    return greeting
+
+
 def bot_response(chat_window, response):
-    chat_window.insert(tk.END, smooth_transition_gui(chat_window, response))
+    timely_greeting = time_greeting()
+    chat_window.insert(tk.END, smooth_transition_gui(chat_window, f'Agent: {timely_greeting},\n{response}'))
     chat_window.insert(tk.END, "\n")
 
 #####   MAIN   #####
@@ -285,10 +324,10 @@ entry_field = tb.Entry(root, textvariable=GUIinput, width= 48, bootstyle="info",
 font=('Verdana', 15))
 entry_field.grid(row=1, column=0)
 entry_field.bind("<Return>",send_message)
-send_button = tb.Button(root, text="Send", command=lambda: send_message, width=6,
+send_button = tb.Button(root, text="Send", command=send_message, width=6,
 bootstyle="outline")
 send_button.grid(row=1, column=1)
 topic = 'Juventus Futbol Club'
-initial_response = "Agent: Hi, I am your virtual assistant, ask me anything about Juventus FC (2021 Roster)" 
+initial_response = "I am your virtual assistant, ask me anything about Juventus FC (2021 Roster)" 
 root.after(500, bot_response(chat_window, initial_response))
 root.mainloop()
