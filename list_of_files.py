@@ -2,7 +2,7 @@ stoplist = ["a","A","about","above","across","after","again","against","all","al
 #this is a list of stopwords
 questionwordlist = ["who", "what", "when", "where", "why", "which", "whose", "whom", "how", "is", "are", "am", "do", "does", "did", "can", "could", "will", "would", "have", "has", "had", "should", "must"]
 
-polite_words = ["Let's find that out", "Definitely", "Absolutely", "Sure", "Of course", "Certainly", "Of course sir", "Good question", "Absolutely", "Sure thing", "Hmmm let me think"]
+polite_words = ["Let's find that out, ", "Definitely, ", "Absolutely, ", "Sure, ", "Of course, ", "Certainly, ", "Of course sir, ", "Good question, ", "Absolutely, ", "Sure thing, ", "Hmmm let me think..."]
 
 phrases_when_unsure = [
     "I'm sorry, I don't have that information.",
@@ -26,6 +26,72 @@ phrases_when_unsure = [
     "I'm sorry, the details on that are not available in my database.",
     "I appreciate your question, but I don't have the answer."
 ]
+
+polite_phrases = [
+    "Can",
+    "will",
+    "Should",
+    "Could",
+    "Would", 
+    "Could you",
+    "Would you",
+    "Do you mind if",
+    "Can you",
+    "Will you",
+    "Is it possible to",
+    "Might I",
+    "May I",
+    "Is there any chance you could",
+    "If it's not too much trouble, could you",
+    "I was wondering if you could",
+    "Do you think you could",
+    "I hope it's okay, but could you",
+    "Would it be alright if",
+    "I'd appreciate it if you could",
+    "Could I trouble you to",
+    "Is there a possibility that you could",
+    "If you don't mind, could you",
+    "Do you have a moment to",
+    "Would it be convenient for you to",
+    "Can I ask you to",
+    "Is there any way you could"
+]
+
+learning_responses = [
+    "Got it.",
+    "Noted.",
+    "Understood.",
+    "Thanks for sharing.",
+    "I appreciate the information.",
+    "I'll remember that.",
+    "Great input!",
+    "Sounds interesting to me.",
+    "I'll keep that in mind.",
+    "Thanks for letting me know.",
+    "I'm learning a lot.",
+    "That's helpful!",
+    "I'll add that to my knowledge.",
+    "I'm getting smarter!",
+    "You're teaching me well!",
+    "I love learning from you.",
+    "Good to know",
+    "Ok, I understand"
+    "I'm improving with your help.",
+    "You're a great teacher.",
+    "I'm absorbing information like a sponge.",
+    "Your input is valuable.",
+    "You're making me smarter.",
+    "I'm here to learn.",
+    "Every bit of information helps.",
+    "Thanks for enlightening me.",
+    "You're contributing to my knowledge base.",
+    "I'm becoming a chatbot guru with your help.",
+    "That's intriguing!",
+    "Wow, interesting!",
+    "You've got my attention.",
+    "Ah ok, I'll keep that in mind for later.",
+]
+
 
 repeatquestionlist = [
     "I already answered that, but I'm happy to repeat it for you: ",
