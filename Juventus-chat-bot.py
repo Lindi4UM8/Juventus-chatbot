@@ -89,14 +89,14 @@ def doc_count(file_path):
         return line_count
 
 #finds the number of words in the humaninput
-def total_words(humaninput):
-    words = humaninput.split()
+def total_words(input):
+    words = input.split()
     total_word_count = len(words)
     return total_word_count
 
 #finds the number of times the target word appears in the humaninput
-def word_appearances_input(humaninput, word):
-    appearances = humaninput.lower().split().count(word.lower())
+def word_appearances_input(input, word):
+    appearances = input.lower().split().count(word.lower())
     return appearances
 
 # caluclates the tf-idf for each word and puts it and its score in a dictionary
@@ -250,15 +250,23 @@ def smooth_transition_gui(chat_window, text, delay=0.046):
         time.sleep(delay)   
     return " "
 
-def send_message(event=None):
-    msg = humaninput.get()
-    if msg.strip() != "":
+def send_message(Event = None):
+    global humaninput
+    humaninput = GUIinput.get()
+    
+    if humaninput.strip() != "":
         chat_window.insert(tb.END, "\n")
-        chat_window.insert(tb.END, "You: " + msg + "\n")
+        chat_window.insert(tb.END, "You: " + humaninput + "\n")
         loading(chat_window)
-        humaninput.set("")
+        isQ = isquestion(humaninput)
+        print(isQ)
+        if isQ == True:
+            message = keywordtracing(humaninput)
+            print(message)
+        else:
+            addToDocument(humaninput)
+        GUIinput.set("")
         chat_window.insert(tb.END, "\n")
-        message = "Agent: I have a super good answer bro!"
         chat_window.insert(tb.END, smooth_transition_gui(chat_window, message), "\n")
         chat_window.insert(tb.END, "\n")
 
@@ -267,29 +275,17 @@ def bot_response(chat_window, response):
     chat_window.insert(tk.END, "\n")
 
 #####   MAIN   #####
-# humaninput = ''
-# while(humaninput != 'q'):
-#     humaninput = input('Enter q to quit: \n')
-#     isQ = isquestion(humaninput) #used to for if else of how to treat input
-#     if humaninput == 'q':
-#         break # JUST HERE WHILE WE NEED IT FOR THE TESTING LOOP
-
-#     if isQ == True:
-#         message = keywordtracing(humaninput)
-#         print(message)
-#     else:
-#         addToDocument(humaninput)
-
 
 chat_window = ScrolledText(root, width=60, height=30, wrap=WORD, autohide=True,
 bootstyle="info", font=('Verdana', 15))
 chat_window.grid(row=0, column=0, columnspan=2, padx=15, pady=15)
-humaninput = tb.StringVar()
-entry_field = tb.Entry(root, textvariable=humaninput, width= 48, bootstyle="info",
+GUIinput = tb.StringVar()
+
+entry_field = tb.Entry(root, textvariable=GUIinput, width= 48, bootstyle="info",
 font=('Verdana', 15))
 entry_field.grid(row=1, column=0)
-entry_field.bind("<Return>", send_message)
-send_button = tb.Button(root, text="Send", command=send_message, width=6,
+entry_field.bind("<Return>",send_message)
+send_button = tb.Button(root, text="Send", command=lambda: send_message, width=6,
 bootstyle="outline")
 send_button.grid(row=1, column=1)
 topic = 'Juventus Futbol Club'
