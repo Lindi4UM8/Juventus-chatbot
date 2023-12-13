@@ -170,7 +170,7 @@ def keywordtracing(input):
         answerchanged += repeatQuestion(makelower(humaninput),answer)
         answerchanged += answer
         return answerchanged
-    return #In the case where there are no keywords it returns nothing, we can change it to be a message of output like: Can you rephrase the question
+    return phrases_when_unsure[random.randint(0,19)]
 
 # def synonyms(input): #probably not useful, but keeping function in case, REMEMBER to uncomment import if using
 #     synonyms = []
