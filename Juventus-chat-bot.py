@@ -254,10 +254,11 @@ def smooth_transition_gui(chat_window, text, delay=0.046):
         time.sleep(delay)   
     return " "
 
-def polite_check(polite_phrases):
+def polite_check(input):
+    message = makelower(input)
     politeness = False
     for item in polite_phrases:
-        if item in humaninput:
+        if item in message:
             politeness = True
     return politeness
 
@@ -274,7 +275,7 @@ def send_message(Event = None):
         manners = ""
         if isQ == True:
             message = keywordtracing(humaninput)
-            politeness = polite_check(polite_phrases)
+            politeness = polite_check(humaninput)
             if politeness:
                 manners = random.choice(polite_words)
         else:
