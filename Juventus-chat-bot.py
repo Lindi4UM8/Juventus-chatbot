@@ -256,11 +256,20 @@ def smooth_transition_gui(chat_window, text, delay=0.046):
 
 def polite_check(input):
     message = makelower(input)
-    politeness = False
+    
+    msg = ''
+    for word in word_tokenize(message):
+        typoword = typocheck(word)
+        if typoword != None:
+            msg += typoword + ' '
+            continue
+        msg += word + ' '
+    
     for item in polite_phrases:
-        if item in message:
-            politeness = True
-    return politeness
+        if item in message or item in msg:
+            return True
+
+    return False
 
 
 def send_message(Event = None):
