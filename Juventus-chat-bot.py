@@ -17,6 +17,7 @@ from ttkbootstrap.scrolled import ScrolledText
 import time
 import os
 import sys
+import spacy
 
 root = tb.Window(themename="cyborg")
 root.title("Simple Virtual Assistant")
@@ -234,6 +235,16 @@ def typocheck(input):
                 return list(typodictionary.keys())[list(typodictionary.values()).index(lists)]
     return None
 
+def identify_name(sentence):
+    nlp = spacy.load("en_core_web_sm")
+    doc = nlp(sentence)
+    for ent in doc.ents:
+        if ent.label_ == "PERSON":
+            return ent.text
+    # Return None if no name is found
+    return None
+
+
 def loading(chat_window, delay=.25):
     text="..."
     for i in range(3):
@@ -272,10 +283,31 @@ def polite_check(input):
     return False
 
 
+def replace_pronoun(input, name):
+    if name == None:
+        return input
+    if "his" in input:
+        input = input.replace("his", name)
+    if "His" in input:
+        input = input.replace("His", name)
+    if "him" in input:
+        input = input.replace("him", name)
+    if "Him" in input:
+        input = input.replace("Him", name)
+    if "he" in input:
+        input = input.replace("he", name)
+    if "He" in input:
+        input = input.replace("He", name)
+    return input
+
+
 def send_message(Event = None):
+    global send_message_count
+    global name
+    if send_message_count == 0:
+        name = ""
     global humaninput
     humaninput = GUIinput.get()
-    
     if humaninput.strip() != "":
         chat_window.insert(tb.END, "\n")
         chat_window.insert(tb.END, "You: " + humaninput + "\n")
@@ -283,6 +315,8 @@ def send_message(Event = None):
         isQ = isquestion(humaninput)
         manners = ""
         if isQ == True:
+            if name is not None:
+                humaninput = replace_pronoun(humaninput, name)
             message = keywordtracing(humaninput)
             politeness = polite_check(humaninput)
             if politeness:
@@ -290,11 +324,14 @@ def send_message(Event = None):
         else:
             addToDocument(humaninput)
             message = random.choice(learning_responses)
+        name = identify_name(humaninput)
         GUIinput.set("")
         chat_window.insert(tb.END, "\n")
         smooth_transition_gui(chat_window,f'Agent: {manners}{message}')
         chat_window.insert(tb.END, "\n")
+        send_message_count += 1
 
+send_message_count = 0
 
 # Determine the greeting based on the current hour
 def time_greeting():    
