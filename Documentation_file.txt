@@ -12,3 +12,10 @@ sudo python3
 
 change the download directory to /usr/local/share/nltk_data
 in the popup window find wordnet library on the corpus tag and download it
+
+to install spacy:
+
+pip install spacy
+python3 -m spacy download en_core_web_sm 
+
+-> try both python and python3 for second command
